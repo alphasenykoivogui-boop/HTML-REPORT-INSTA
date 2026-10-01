@@ -1,0 +1,2921 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<title>PRIME REPORT MP</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Orbitron:wght@500;600;700;800;900&display=swap');
+
+:root{
+    --accent:#00d9ff;
+    --accent2:#7c4dff;
+    --danger:#ff3f70;
+    --success:#20e5a4;
+    --bg:#02040a;
+    --panel:rgba(7,12,24,.72);
+    --panel2:rgba(11,19,37,.86);
+    --line:rgba(255,255,255,.10);
+    --text:#f5f8ff;
+    --muted:#8190aa;
+    --radius:26px;
+}
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    min-height:100vh;
+    color:var(--text);
+    background:
+        radial-gradient(circle at 10% 0%,rgba(0,217,255,.12),transparent 28%),
+        radial-gradient(circle at 90% 10%,rgba(124,77,255,.13),transparent 30%),
+        var(--bg);
+    font-family:Inter,Arial,sans-serif;
+    overflow-x:hidden;
+    padding-bottom:100px;
+}
+
+/* =========================
+   BACKGROUND
+========================= */
+
+#mediaBackground,
+#imageBackground{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:-10;
+    display:none;
+}
+
+#backgroundOverlay{
+    position:fixed;
+    inset:0;
+    z-index:-9;
+    pointer-events:none;
+    background:
+        linear-gradient(
+            180deg,
+            rgba(1,3,10,.55),
+            rgba(1,3,10,.92)
+        ),
+        radial-gradient(
+            circle at center,
+            transparent 0%,
+            rgba(0,0,0,.55) 90%
+        );
+}
+
+#grid{
+    position:fixed;
+    inset:0;
+    z-index:-8;
+    pointer-events:none;
+    opacity:.11;
+    background-image:
+        linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);
+    background-size:42px 42px;
+    mask-image:linear-gradient(to bottom,#000,transparent 92%);
+}
+
+/* =========================
+   TOP BAR
+========================= */
+
+.top{
+    position:sticky;
+    top:0;
+    z-index:100;
+    height:72px;
+    display:flex;
+    align-items:center;
+    gap:11px;
+    padding:10px 13px;
+    background:rgba(1,3,9,.70);
+    backdrop-filter:blur(25px);
+    border-bottom:1px solid var(--line);
+}
+
+.logo{
+    width:45px;
+    height:45px;
+    flex-shrink:0;
+    display:grid;
+    place-items:center;
+    border-radius:15px;
+    color:var(--accent);
+    font-family:Orbitron;
+    font-size:17px;
+    font-weight:900;
+    border:1px solid rgba(0,217,255,.30);
+    background:rgba(0,217,255,.06);
+    box-shadow:0 0 30px rgba(0,217,255,.12);
+}
+
+.top-title{
+    flex:1;
+    height:45px;
+    display:flex;
+    align-items:center;
+    padding:0 16px;
+    border-radius:22px;
+    background:rgba(255,255,255,.045);
+    border:1px solid var(--line);
+    font-family:Orbitron;
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:1px;
+}
+
+.top-status{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:var(--success);
+    font-size:7px;
+    font-weight:800;
+}
+
+.live-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--success);
+    box-shadow:0 0 12px var(--success);
+}
+
+.top-button{
+    width:43px;
+    height:43px;
+    flex-shrink:0;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:rgba(255,255,255,.04);
+    color:white;
+    font-size:19px;
+}
+
+/* =========================
+   PAGES
+========================= */
+
+.page{
+    display:none;
+    width:min(94%,700px);
+    margin:20px auto;
+    animation:pageIn .35s ease;
+}
+
+.page.active{
+    display:block;
+}
+
+@keyframes pageIn{
+    from{
+        opacity:0;
+        transform:translateY(12px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    position:relative;
+    overflow:hidden;
+    padding:25px 17px 24px;
+    border-radius:34px;
+    background:var(--panel);
+    border:1px solid rgba(255,255,255,.11);
+    backdrop-filter:blur(22px);
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.45),
+        inset 0 0 50px rgba(255,255,255,.015);
+}
+
+.hero:before{
+    content:"";
+    position:absolute;
+    width:280px;
+    height:280px;
+    right:-150px;
+    top:-140px;
+    border-radius:50%;
+    background:var(--accent2);
+    opacity:.14;
+    filter:blur(65px);
+}
+
+.hero:after{
+    content:"";
+    position:absolute;
+    width:240px;
+    height:240px;
+    left:-160px;
+    bottom:-140px;
+    border-radius:50%;
+    background:var(--accent);
+    opacity:.10;
+    filter:blur(60px);
+}
+
+/* =========================
+   PROFILE / USER PHOTO
+========================= */
+
+.profile{
+    position:relative;
+    z-index:2;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+}
+
+.profile-photo-wrap{
+    position:relative;
+    width:112px;
+    height:112px;
+}
+
+.profile-photo-wrap:before{
+    content:"";
+    position:absolute;
+    inset:-7px;
+    border-radius:34px;
+    background:
+        conic-gradient(
+            var(--accent),
+            var(--accent2),
+            var(--danger),
+            var(--accent)
+        );
+    animation:spin 7s linear infinite;
+    filter:blur(.2px);
+}
+
+.profile-photo-wrap:after{
+    content:"";
+    position:absolute;
+    inset:-16px;
+    border-radius:40px;
+    background:var(--accent);
+    opacity:.10;
+    filter:blur(25px);
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.profile-photo{
+    position:absolute;
+    z-index:2;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:center;
+    border-radius:30px;
+    border:3px solid #050812;
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.12),
+        0 20px 60px rgba(0,0,0,.5);
+}
+
+.verified{
+    position:absolute;
+    z-index:5;
+    right:-5px;
+    bottom:-5px;
+    width:29px;
+    height:29px;
+    display:grid;
+    place-items:center;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    border:3px solid #060913;
+    color:white;
+    font-size:12px;
+    box-shadow:0 0 20px rgba(0,217,255,.25);
+}
+
+.profile h1{
+    margin-top:22px;
+    font-family:Orbitron;
+    font-size:25px;
+    letter-spacing:1px;
+}
+
+.profile p{
+    margin-top:8px;
+    color:var(--muted);
+    font-size:7px;
+    letter-spacing:3px;
+}
+
+/* =========================
+   DASHBOARD
+========================= */
+
+.dashboard{
+    position:relative;
+    z-index:2;
+    margin-top:24px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+}
+
+.stat{
+    padding:15px 7px;
+    text-align:center;
+    border-radius:19px;
+    background:rgba(255,255,255,.045);
+    border:1px solid var(--line);
+}
+
+.stat-value{
+    font-family:Orbitron;
+    font-size:18px;
+    font-weight:900;
+    color:var(--accent);
+}
+
+.stat-label{
+    margin-top:6px;
+    color:#73829b;
+    font-size:6px;
+    font-weight:700;
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+.section{
+    position:relative;
+    z-index:2;
+    margin-top:25px;
+}
+
+.section-title{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin:0 4px 13px;
+    font-family:Orbitron;
+    font-size:11px;
+    font-weight:900;
+}
+
+.section-title b{
+    color:var(--accent);
+}
+
+/* =========================
+   REPORT TYPES
+========================= */
+
+.types{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+}
+
+.type{
+    min-height:108px;
+    padding:13px 6px;
+    border-radius:22px;
+    color:white;
+    font-family:inherit;
+    background:rgba(7,14,28,.72);
+    border:1px solid rgba(255,255,255,.09);
+    transition:.2s;
+}
+
+.type:active{
+    transform:scale(.97);
+}
+
+.type.selected{
+    border-color:var(--accent);
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0,217,255,.15),
+            rgba(124,77,255,.12)
+        );
+    box-shadow:
+        0 0 28px rgba(0,217,255,.12),
+        inset 0 0 25px rgba(255,255,255,.02);
+}
+
+.type-icon{
+    display:block;
+    margin-bottom:9px;
+    font-size:23px;
+}
+
+.type-name{
+    font-family:Orbitron;
+    font-size:8px;
+    font-weight:900;
+}
+
+.type-description{
+    display:block;
+    margin-top:7px;
+    color:#6d7d97;
+    font-size:6px;
+    line-height:1.5;
+}
+
+/* =========================
+   INPUT
+========================= */
+
+.input{
+    width:100%;
+    height:61px;
+    padding:0 18px;
+    border-radius:21px;
+    outline:none;
+    color:white;
+    font-family:Inter,Arial,sans-serif;
+    font-size:12px;
+    background:rgba(4,12,26,.78);
+    border:1px solid rgba(255,255,255,.10);
+    transition:.2s;
+}
+
+.input::placeholder{
+    color:#52647e;
+}
+
+.input:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 25px rgba(0,217,255,.10);
+}
+
+/* =========================
+   MESSAGE
+========================= */
+
+.message{
+    min-height:180px;
+    padding:18px;
+    border-radius:23px;
+    background:rgba(2,9,20,.75);
+    border:1px solid rgba(255,255,255,.09);
+    color:#dce8fa;
+    font-family:Arial,sans-serif;
+    font-size:13px;
+    line-height:1.7;
+    white-space:pre-wrap;
+}
+
+.empty{
+    color:#71819b;
+    font-family:Orbitron,Arial,sans-serif;
+    font-size:8px;
+    line-height:2;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+.primary{
+    width:100%;
+    height:59px;
+    margin-top:12px;
+    border:0;
+    border-radius:21px;
+    color:#00131d;
+    font-family:Orbitron;
+    font-size:9px;
+    font-weight:900;
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent),
+            #00a9ff
+        );
+    box-shadow:0 0 30px rgba(0,217,255,.20);
+    transition:.2s;
+}
+
+.primary:active{
+    transform:scale(.98);
+}
+
+.direct{
+    color:white;
+    background:
+        linear-gradient(
+            135deg,
+            #ff386e,
+            #824cff
+        );
+    box-shadow:0 0 30px rgba(220,70,255,.17);
+}
+
+.row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+    margin-top:9px;
+}
+
+.secondary{
+    height:51px;
+    border-radius:18px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.045);
+    color:#dce8fa;
+    font-family:Orbitron;
+    font-size:7px;
+    font-weight:800;
+}
+
+/* =========================
+   SUPPORT
+========================= */
+
+.support-card{
+    position:relative;
+    overflow:hidden;
+    margin-top:12px;
+    padding:20px;
+    border-radius:24px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,.065),
+            rgba(255,255,255,.025)
+        );
+    border:1px solid var(--line);
+}
+
+.support-card:after{
+    content:"";
+    position:absolute;
+    width:180px;
+    height:180px;
+    right:-90px;
+    top:-90px;
+    border-radius:50%;
+    background:var(--accent);
+    opacity:.07;
+    filter:blur(35px);
+}
+
+.support-head{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.support-icon{
+    width:48px;
+    height:48px;
+    display:grid;
+    place-items:center;
+    flex-shrink:0;
+    border-radius:16px;
+    background:rgba(255,255,255,.06);
+    border:1px solid var(--line);
+    font-size:21px;
+}
+
+.support-title{
+    font-family:Orbitron;
+    font-size:11px;
+    font-weight:900;
+}
+
+.support-subtitle{
+    margin-top:5px;
+    color:var(--muted);
+    font-size:7px;
+}
+
+.support-card p{
+    position:relative;
+    z-index:2;
+    margin-top:15px;
+    color:#8290a8;
+    font-family:Arial,sans-serif;
+    font-size:12px;
+    line-height:1.65;
+}
+
+.status{
+    position:relative;
+    z-index:2;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    margin-top:13px;
+    padding:7px 9px;
+    border-radius:999px;
+    color:#ff8585;
+    background:rgba(255,82,82,.07);
+    border:1px solid rgba(255,82,82,.15);
+    font-size:7px;
+    font-weight:900;
+}
+
+.status.green{
+    color:var(--success);
+    background:rgba(32,229,164,.07);
+    border-color:rgba(32,229,164,.17);
+}
+
+.status-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:currentColor;
+    box-shadow:0 0 10px currentColor;
+}
+
+/* =========================
+   HISTORY
+========================= */
+
+.history-card{
+    padding:16px;
+    margin-bottom:9px;
+    border-radius:21px;
+    background:rgba(5,13,27,.78);
+    border:1px solid var(--line);
+}
+
+.history-top{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.history-target{
+    font-size:10px;
+    font-weight:900;
+}
+
+.badge{
+    padding:6px 8px;
+    border-radius:9px;
+    font-size:5px;
+    color:var(--accent);
+    background:rgba(0,217,255,.06);
+    border:1px solid rgba(0,217,255,.15);
+}
+
+.history-bottom{
+    margin-top:9px;
+    color:#687993;
+    font-size:6px;
+}
+
+/* =========================
+   INFO
+========================= */
+
+.info-card{
+    padding:21px;
+    border-radius:24px;
+    background:rgba(5,13,27,.72);
+    border:1px solid var(--line);
+}
+
+.info-card h2{
+    font-family:Orbitron;
+    font-size:12px;
+    margin-bottom:12px;
+}
+
+.info-card p{
+    color:#8290a8;
+    font-family:Arial,sans-serif;
+    font-size:12px;
+    line-height:1.65;
+}
+
+/* =========================
+   THEMES
+========================= */
+
+.theme-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+}
+
+.theme{
+    height:65px;
+    border-radius:17px;
+    border:1px solid var(--line);
+    color:white;
+    font-family:Orbitron;
+    font-size:7px;
+    font-weight:800;
+}
+
+.theme.active{
+    outline:2px solid var(--accent);
+    outline-offset:2px;
+}
+
+.theme.black{
+    background:#01030a;
+}
+
+.theme.blue{
+    background:linear-gradient(135deg,#001927,#006eff);
+}
+
+.theme.purple{
+    background:linear-gradient(135deg,#0e061d,#7c4dff);
+}
+
+.theme.red{
+    background:linear-gradient(135deg,#20030a,#ff315d);
+}
+
+.theme.green{
+    background:linear-gradient(135deg,#001b17,#00d99a);
+}
+
+.theme.gold{
+    background:linear-gradient(135deg,#1c1200,#d7a321);
+}
+
+/* =========================
+   BOTTOM NAV
+========================= */
+
+.bottom{
+    position:fixed;
+    left:50%;
+    bottom:10px;
+    z-index:200;
+    width:min(95%,700px);
+    height:68px;
+    transform:translateX(-50%);
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:3px;
+    padding:7px;
+    border-radius:25px;
+    background:rgba(2,6,15,.82);
+    backdrop-filter:blur(25px);
+    border:1px solid rgba(255,255,255,.10);
+    box-shadow:0 15px 45px rgba(0,0,0,.5);
+}
+
+.nav{
+    border:0;
+    border-radius:17px;
+    color:#65748c;
+    background:transparent;
+    font-family:Orbitron;
+    font-size:6px;
+    transition:.2s;
+}
+
+.nav-icon{
+    display:block;
+    font-size:18px;
+    margin-bottom:3px;
+}
+
+.nav.active{
+    color:var(--accent);
+    background:rgba(0,217,255,.07);
+}
+
+/* =========================
+   TOAST
+========================= */
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:92px;
+    z-index:500;
+    width:min(90%,430px);
+    padding:14px 17px;
+    transform:translate(-50%,120px);
+    opacity:0;
+    border-radius:17px;
+    background:rgba(4,10,21,.96);
+    border:1px solid rgba(255,255,255,.13);
+    text-align:center;
+    font-size:8px;
+    font-weight:700;
+    transition:.3s;
+}
+
+.toast.show{
+    transform:translate(-50%,0);
+    opacity:1;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:600;
+    display:none;
+    place-items:center;
+    padding:20px;
+    background:rgba(0,0,0,.75);
+    backdrop-filter:blur(14px);
+}
+
+.modal.show{
+    display:grid;
+}
+
+.modal-box{
+    width:min(100%,430px);
+    padding:23px;
+    border-radius:27px;
+    background:rgba(7,14,29,.97);
+    border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 30px 90px rgba(0,0,0,.6);
+}
+
+.modal-box h2{
+    font-family:Orbitron;
+    font-size:14px;
+    margin-bottom:12px;
+}
+
+.modal-box p{
+    color:#8290a8;
+    font-family:Arial,sans-serif;
+    font-size:12px;
+    line-height:1.6;
+}
+
+.modal-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+    margin-top:18px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:390px){
+
+    .top-status{
+        display:none;
+    }
+
+    .profile h1{
+        font-size:22px;
+    }
+
+    .type{
+        min-height:100px;
+    }
+
+    .type-description{
+        display:none;
+    }
+
+    .nav{
+        font-size:5px;
+    }
+
+    .nav-icon{
+        font-size:17px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- BACKGROUNDS -->
+
+<video
+    id="mediaBackground"
+    autoplay
+    muted
+    loop
+    playsinline>
+</video>
+
+<img
+    id="imageBackground"
+    alt="Background">
+
+<div id="backgroundOverlay"></div>
+<div id="grid"></div>
+
+
+<!-- TOP -->
+
+<header class="top">
+
+    <div class="logo">
+        PR
+    </div>
+
+    <div class="top-title">
+        PRIME REPORT PRO
+    </div>
+
+    <div class="top-status">
+        <span class="live-dot"></span>
+        LOCAL
+    </div>
+
+    <button
+        class="top-button"
+        onclick="resetApp()">
+        ↻
+    </button>
+
+</header>
+
+
+<!-- =========================
+     HOME
+========================= -->
+
+<section
+    class="page active"
+    id="home">
+
+<div class="hero">
+
+<div class="profile">
+
+    <!-- PHOTO DE PROFIL -->
+    <div class="profile-photo-wrap">
+
+        <img
+            class="profile-photo"
+            src="https://files.catbox.moe/ta4agk.jpg"
+            alt="Profil">
+
+        <div class="verified">
+            ✓
+        </div>
+
+    </div>
+
+    <h1>
+        PRIME REPORT
+    </h1>
+
+    <p>
+        DARK REPORT ASSISTANT
+    </p>
+
+</div>
+
+
+<!-- DASHBOARD -->
+
+<div class="dashboard">
+
+    <div class="stat">
+
+        <div
+            class="stat-value"
+            id="total">
+            0
+        </div>
+
+        <div class="stat-label">
+            RAPPORTS
+        </div>
+
+    </div>
+
+    <div class="stat">
+
+        <div
+            class="stat-value"
+            id="generated">
+            0
+        </div>
+
+        <div class="stat-label">
+            GÉNÉRÉS
+        </div>
+
+    </div>
+
+    <div class="stat">
+
+        <div class="stat-value">
+            100%
+        </div>
+
+        <div class="stat-label">
+            LOCAL
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- TYPE -->
+
+<div class="section">
+
+<div class="section-title">
+    <b>◆</b>
+    TYPE DE SIGNALEMENT
+</div>
+
+<div class="types">
+
+<button
+    class="type"
+    data-type="spam"
+    onclick="chooseType(this)">
+
+    <span class="type-icon">🚫</span>
+
+    <span class="type-name">
+        SPAM
+    </span>
+
+    <span class="type-description">
+        Activité indésirable
+    </span>
+
+</button>
+
+
+<button
+    class="type"
+    data-type="impersonation"
+    onclick="chooseType(this)">
+
+    <span class="type-icon">🎭</span>
+
+    <span class="type-name">
+        USURPATION
+    </span>
+
+    <span class="type-description">
+        Fausse identité
+    </span>
+
+</button>
+
+
+<button
+    class="type"
+    data-type="abuse"
+    onclick="chooseType(this)">
+
+    <span class="type-icon">⚠️</span>
+
+    <span class="type-name">
+        ABUS
+    </span>
+
+    <span class="type-description">
+        Contenu problématique
+    </span>
+
+</button>
+
+</div>
+
+</div>
+
+
+<!-- TARGET -->
+
+<div class="section">
+
+<div class="section-title">
+    <b>◆</b>
+    COMPTE CIBLÉ
+</div>
+
+<input
+    class="input"
+    id="target"
+    placeholder="@utilisateur ou URL Instagram"
+    autocomplete="off">
+
+</div>
+
+
+<!-- REPORT -->
+
+<div class="section">
+
+<div class="section-title">
+    <b>◆</b>
+    RAPPORT
+</div>
+
+<div
+    class="message"
+    id="message">
+
+    <div class="empty">
+        Sélectionne un motif et indique
+        le compte concerné.
+
+        <br><br>
+
+        Le rapport sera préparé ici.
+    </div>
+
+</div>
+
+
+<button
+    class="primary"
+    onclick="generate()">
+
+    ⚡ GÉNÉRER LE RAPPORT
+
+</button>
+
+
+<button
+    class="primary direct"
+    onclick="openOfficialProfile()">
+
+    ↗ OUVRIR LE PROFIL INSTAGRAM
+
+</button>
+
+
+<div class="row">
+
+    <button
+        class="secondary"
+        onclick="copyReport()">
+
+        ⧉ COPIER
+
+    </button>
+
+    <button
+        class="secondary"
+        onclick="confirmEmail()">
+
+        ✉ PRÉPARER E-MAIL
+
+    </button>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     HISTORY
+========================= -->
+
+<section
+    class="page"
+    id="history">
+
+<div class="hero">
+
+<div class="profile">
+
+    <div class="profile-photo-wrap">
+
+        <img
+            class="profile-photo"
+            src="https://files.catbox.moe/ta4agk.jpg"
+            alt="Profil">
+
+    </div>
+
+    <h1>
+        HISTORIQUE
+    </h1>
+
+    <p>
+        ACTIVITÉ LOCALE
+    </p>
+
+</div>
+
+<div
+    class="section"
+    id="historyList">
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     STATS
+========================= -->
+
+<section
+    class="page"
+    id="stats">
+
+<div class="hero">
+
+<div class="profile">
+
+    <div class="profile-photo-wrap">
+
+        <img
+            class="profile-photo"
+            src="https://files.catbox.moe/ta4agk.jpg"
+            alt="Profil">
+
+    </div>
+
+    <h1>
+        STATISTIQUES
+    </h1>
+
+    <p>
+        TABLEAU DE BORD
+    </p>
+
+</div>
+
+
+<div class="dashboard">
+
+    <div class="stat">
+
+        <div
+            class="stat-value"
+            id="statTotal">
+            0
+        </div>
+
+        <div class="stat-label">
+            TOTAL
+        </div>
+
+    </div>
+
+    <div class="stat">
+
+        <div
+            class="stat-value"
+            id="statGen">
+            0
+        </div>
+
+        <div class="stat-label">
+            GÉNÉRÉS
+        </div>
+
+    </div>
+
+    <div class="stat">
+
+        <div
+            class="stat-value"
+            id="statSpam">
+            0
+        </div>
+
+        <div class="stat-label">
+            SPAM
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     SETTINGS
+========================= -->
+
+<section
+    class="page"
+    id="settings">
+
+<div class="hero">
+
+<div class="profile">
+
+    <div class="profile-photo-wrap">
+
+        <img
+            class="profile-photo"
+            src="https://files.catbox.moe/ta4agk.jpg"
+            alt="Profil">
+
+    </div>
+
+    <h1>
+        RÉGLAGES
+    </h1>
+
+    <p>
+        PERSONNALISATION
+    </p>
+
+</div>
+
+
+<div class="section">
+
+<div class="section-title">
+    <b>◆</b>
+    THÈME
+</div>
+
+<div class="theme-grid">
+
+<button
+    class="theme black active"
+    onclick="setTheme('#00d9ff','#7c4dff',this)">
+    CYAN
+</button>
+
+<button
+    class="theme blue"
+    onclick="setTheme('#00d9ff','#006eff',this)">
+    BLUE
+</button>
+
+<button
+    class="theme purple"
+    onclick="setTheme('#a875ff','#7c4dff',this)">
+    PURPLE
+</button>
+
+<button
+    class="theme red"
+    onclick="setTheme('#ff416d','#ff1744',this)">
+    RED
+</button>
+
+<button
+    class="theme green"
+    onclick="setTheme('#20e5a4','#00a878',this)">
+    GREEN
+</button>
+
+<button
+    class="theme gold"
+    onclick="setTheme('#ffd166','#d7a321',this)">
+    GOLD
+</button>
+
+</div>
+
+</div>
+
+
+<div class="section">
+
+<div class="section-title">
+    <b>◆</b>
+    ARRIÈRE-PLAN
+</div>
+
+<div class="row">
+
+<button
+    class="secondary"
+    onclick="document.getElementById('imagePicker').click()">
+
+    🖼 PHOTO
+
+</button>
+
+<button
+    class="secondary"
+    onclick="document.getElementById('videoPicker').click()">
+
+    🎥 VIDÉO
+
+</button>
+
+</div>
+
+<input
+    type="file"
+    id="imagePicker"
+    accept="image/*"
+    style="display:none"
+    onchange="loadImage(event)">
+
+<input
+    type="file"
+    id="videoPicker"
+    accept="video/*"
+    style="display:none"
+    onchange="loadVideo(event)">
+
+<button
+    class="primary"
+    onclick="removeBackground()">
+
+    ✕ RETIRER LE FOND
+
+</button>
+
+</div>
+
+
+<div class="section">
+
+<div class="info-card">
+
+<h2>
+    ◆ STOCKAGE
+</h2>
+
+<p>
+    Les rapports et statistiques restent
+    enregistrés localement dans le navigateur.
+</p>
+
+</div>
+
+</div>
+
+
+<div class="section">
+
+<button
+    class="primary"
+    onclick="clearHistory()">
+
+    🗑 EFFACER LES DONNÉES LOCALES
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     SUPPORT
+========================= -->
+
+<section
+    class="page"
+    id="support">
+
+<div class="hero">
+
+<div class="profile">
+
+    <div class="profile-photo-wrap">
+
+        <img
+            class="profile-photo"
+            src="https://files.catbox.moe/ta4agk.jpg"
+            alt="Profil">
+
+    </div>
+
+    <h1>
+        SUPPORT
+    </h1>
+
+    <p>
+        INSTAGRAM OFFICIAL CHANNELS
+    </p>
+
+</div>
+
+
+<!-- SUPPORT OFFICIEL -->
+
+<div class="support-card">
+
+<div class="support-head">
+
+    <div class="support-icon">
+        🛟
+    </div>
+
+    <div>
+
+        <div class="support-title">
+            CENTRE DE SUPPORT
+        </div>
+
+        <div class="support-subtitle">
+            CANAL OFFICIEL META
+        </div>
+
+    </div>
+
+</div>
+
+<p>
+    Accède au hub officiel de support
+    pour les problèmes de compte,
+    les signalements et la récupération.
+</p>
+
+<div class="status green">
+
+    <span class="status-dot"></span>
+
+    OFFICIEL
+
+</div>
+
+<button
+    class="primary"
+    onclick="openInstagramHelp()">
+
+    ↗ OUVRIR LE SUPPORT
+
+</button>
+
+</div>
+
+
+<!-- EMAIL -->
+
+<div class="support-card">
+
+<div class="support-head">
+
+    <div class="support-icon">
+        ✉
+    </div>
+
+    <div>
+
+        <div class="support-title">
+            SUPPORT E-MAIL
+        </div>
+
+        <div class="support-subtitle">
+            VÉRIFICATION D'ADRESSE
+        </div>
+
+    </div>
+
+</div>
+
+<p>
+    Aucune adresse e-mail générale
+    publique Instagram n'est affichée ici
+    sans vérification officielle.
+</p>
+
+<div class="status">
+
+    <span class="status-dot"></span>
+
+    PAS D'ADRESSE GÉNÉRALE VÉRIFIÉE
+
+</div>
+
+<button
+    class="primary"
+    onclick="showEmailStatus()">
+
+    ℹ VOIR LES INFORMATIONS
+
+</button>
+
+</div>
+
+
+<!-- META VERIFIED -->
+
+<div class="support-card">
+
+<div class="support-head">
+
+    <div class="support-icon">
+        ✓
+    </div>
+
+    <div>
+
+        <div class="support-title">
+            META VERIFIED
+        </div>
+
+        <div class="support-subtitle">
+            SUPPORT SELON ÉLIGIBILITÉ
+        </div>
+
+    </div>
+
+</div>
+
+<p>
+    Certaines offres Meta Verified
+    donnent accès au support, notamment
+    pour les comptes professionnels.
+</p>
+
+<div class="status green">
+
+    <span class="status-dot"></span>
+
+    SUPPORT DISPONIBLE SELON OFFRE
+
+</div>
+
+<button
+    class="primary"
+    onclick="openMetaVerified()">
+
+    ↗ META VERIFIED
+
+</button>
+
+</div>
+
+
+<!-- USURPATION -->
+
+<div class="support-card">
+
+<div class="support-head">
+
+    <div class="support-icon">
+        🎭
+    </div>
+
+    <div>
+
+        <div class="support-title">
+            USURPATION
+        </div>
+
+        <div class="support-subtitle">
+            PARCOURS OFFICIEL
+        </div>
+
+    </div>
+
+</div>
+
+<p>
+    Accède au parcours prévu pour
+    les signalements d'usurpation.
+</p>
+
+<button
+    class="primary"
+    onclick="openImpersonationHelp()">
+
+    🔐 OUVRIR LE PARCOURS
+
+</button>
+
+</div>
+
+
+<!-- COMPTE PIRATÉ -->
+
+<div class="support-card">
+
+<div class="support-head">
+
+    <div class="support-icon">
+        🔒
+    </div>
+
+    <div>
+
+        <div class="support-title">
+            COMPTE COMPROMIS
+        </div>
+
+        <div class="support-subtitle">
+            RÉCUPÉRATION
+        </div>
+
+    </div>
+
+</div>
+
+<p>
+    Utilise le parcours officiel de
+    récupération si tu as perdu l'accès
+    à ton compte.
+</p>
+
+<button
+    class="primary"
+    onclick="openHackedHelp()">
+
+    🔐 RÉCUPÉRER LE COMPTE
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav class="bottom">
+
+<button
+    class="nav active"
+    onclick="navigate('home',this)">
+
+    <span class="nav-icon">⌂</span>
+    ACCUEIL
+
+</button>
+
+<button
+    class="nav"
+    onclick="navigate('history',this)">
+
+    <span class="nav-icon">◷</span>
+    HISTORIQUE
+
+</button>
+
+<button
+    class="nav"
+    onclick="navigate('stats',this)">
+
+    <span class="nav-icon">◉</span>
+    STATS
+
+</button>
+
+<button
+    class="nav"
+    onclick="navigate('support',this)">
+
+    <span class="nav-icon">◎</span>
+    SUPPORT
+
+</button>
+
+</nav>
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast">
+</div>
+
+
+<!-- EMAIL MODAL -->
+
+<div
+    class="modal"
+    id="emailModal">
+
+<div class="modal-box">
+
+<h2>
+    ✉ PRÉPARER UN E-MAIL
+</h2>
+
+<p>
+    PRIME REPORT PRO ne remplit volontairement
+    aucune adresse Instagram non vérifiée.
+    Le texte sera préparé dans ton application
+    e-mail afin que tu puisses choisir toi-même
+    le destinataire et vérifier le contenu.
+</p>
+
+<div class="modal-actions">
+
+<button
+    class="secondary"
+    onclick="closeModal()">
+
+    ANNULER
+
+</button>
+
+<button
+    class="primary"
+    style="margin:0"
+    onclick="openEmail()">
+
+    CONTINUER
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- SUPPORT STATUS MODAL -->
+
+<div
+    class="modal"
+    id="supportModal">
+
+<div class="modal-box">
+
+<h2>
+    ✉ STATUT DU SUPPORT E-MAIL
+</h2>
+
+<p>
+    Aucune adresse e-mail générale Instagram
+    n'est actuellement affichée dans PRIME REPORT PRO
+    comme adresse officielle vérifiée.
+    <br><br>
+    Meta indique que le support passe par son hub
+    de support intégré et que certaines offres
+    Meta Verified disposent de canaux de support
+    supplémentaires.
+</p>
+
+<div class="modal-actions">
+
+<button
+    class="secondary"
+    onclick="closeSupportModal()">
+
+    FERMER
+
+</button>
+
+<button
+    class="primary"
+    style="margin:0"
+    onclick="openInstagramHelp()">
+
+    SUPPORT OFFICIEL
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   STATE
+========================= */
+
+let selectedType="";
+let reportText="";
+let toastTimer=null;
+
+
+/* =========================
+   TEMPLATES
+========================= */
+
+const templates={
+
+spam:
+`Objet : Signalement d'un compte Instagram
+
+Bonjour,
+
+Je souhaite signaler le compte suivant :
+
+{target}
+
+Motif :
+activité potentiellement assimilable à du spam ou à des communications indésirables.
+
+Je demande simplement qu'une vérification soit effectuée conformément aux règles applicables d'Instagram.
+
+Merci de votre attention.
+
+Cordialement.`,
+
+impersonation:
+`Objet : Signalement d'une possible usurpation
+
+Bonjour,
+
+Je souhaite signaler le compte suivant :
+
+{target}
+
+Motif :
+possible usurpation d'identité ou représentation trompeuse.
+
+Je souhaite qu'une vérification soit effectuée afin de déterminer si ce compte respecte les règles applicables.
+
+Merci de procéder aux vérifications nécessaires.
+
+Cordialement.`,
+
+abuse:
+`Objet : Signalement d'un compte Instagram
+
+Bonjour,
+
+Je souhaite signaler le compte suivant :
+
+{target}
+
+Motif :
+contenu ou comportement potentiellement contraire aux règles de la plateforme.
+
+Je transmets ces informations afin qu'une vérification puisse être effectuée.
+
+Merci de prendre les mesures appropriées si une violation est constatée.
+
+Cordialement.`
+
+};
+
+
+/* =========================
+   STORAGE
+========================= */
+
+function getHistory(){
+
+    try{
+
+        return JSON.parse(
+            localStorage.getItem(
+                "prime_reports"
+            ) || "[]"
+        );
+
+    }catch{
+
+        return [];
+
+    }
+
+}
+
+
+function saveHistory(item){
+
+    const list=getHistory();
+
+    list.unshift(item);
+
+    localStorage.setItem(
+        "prime_reports",
+        JSON.stringify(
+            list.slice(0,50)
+        )
+    );
+
+}
+
+
+/* =========================
+   SELECT TYPE
+========================= */
+
+function chooseType(button){
+
+    document
+        .querySelectorAll(".type")
+        .forEach(x =>
+            x.classList.remove("selected")
+        );
+
+    button.classList.add("selected");
+
+    selectedType=
+        button.dataset.type;
+
+    toast(
+        "Motif : " +
+        button
+        .querySelector(".type-name")
+        .textContent
+    );
+
+}
+
+
+/* =========================
+   TARGET
+========================= */
+
+function getTarget(){
+
+    let value=
+        document
+        .getElementById("target")
+        .value
+        .trim();
+
+    if(!value){
+
+        toast(
+            "Entre un compte Instagram."
+        );
+
+        return null;
+
+    }
+
+    if(value.startsWith("@")){
+
+        value=value.substring(1);
+
+    }
+
+    return value;
+
+}
+
+
+/* =========================
+   GENERATE
+========================= */
+
+function generate(){
+
+    const target=getTarget();
+
+    if(!target)return;
+
+    if(!selectedType){
+
+        toast(
+            "Choisis d'abord un motif."
+        );
+
+        return;
+
+    }
+
+    reportText=
+        templates[selectedType]
+        .replace(
+            "{target}",
+            target
+        );
+
+    document
+        .getElementById("message")
+        .textContent=reportText;
+
+    saveHistory({
+
+        target,
+        type:selectedType,
+        date:new Date()
+            .toLocaleString("fr-FR")
+
+    });
+
+    increment("generated");
+
+    updateDashboard();
+
+    toast(
+        "Rapport préparé."
+    );
+
+}
+
+
+/* =========================
+   PROFILE
+========================= */
+
+function openOfficialProfile(){
+
+    const target=getTarget();
+
+    if(!target)return;
+
+    let url=target;
+
+    if(
+        !/^https?:\/\//i
+        .test(url)
+    ){
+
+        url=
+            "https://www.instagram.com/" +
+            url
+            .replace(/^\/+/,"");
+
+    }
+
+    try{
+
+        const parsed=
+            new URL(url);
+
+        if(
+            parsed.hostname !==
+            "instagram.com" &&
+            !parsed.hostname
+                .endsWith(".instagram.com")
+        ){
+
+            toast(
+                "URL Instagram invalide."
+            );
+
+            return;
+
+        }
+
+        window.open(
+            parsed.href,
+            "_blank",
+            "noopener,noreferrer"
+        );
+
+        toast(
+            "Profil Instagram ouvert."
+        );
+
+    }catch{
+
+        toast(
+            "URL invalide."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   SUPPORT
+========================= */
+
+function openInstagramHelp(){
+
+    window.open(
+        "https://help.instagram.com/",
+        "_blank",
+        "noopener,noreferrer"
+    );
+
+    closeSupportModal();
+
+    toast(
+        "Support Instagram ouvert."
+    );
+
+}
+
+
+function openImpersonationHelp(){
+
+    window.open(
+        "https://help.instagram.com/370054663112398/",
+        "_blank",
+        "noopener,noreferrer"
+    );
+
+    toast(
+        "Parcours d'usurpation ouvert."
+    );
+
+}
+
+
+function openHackedHelp(){
+
+    window.open(
+        "https://www.instagram.com/hacked/",
+        "_blank",
+        "noopener,noreferrer"
+    );
+
+    toast(
+        "Parcours de récupération ouvert."
+    );
+
+}
+
+
+function openMetaVerified(){
+
+    window.open(
+        "https://www.meta.com/meta-verified/",
+        "_blank",
+        "noopener,noreferrer"
+    );
+
+    toast(
+        "Meta Verified ouvert."
+    );
+
+}
+
+
+/* =========================
+   COPY
+========================= */
+
+async function copyReport(){
+
+    if(!reportText){
+
+        toast(
+            "Génère d'abord le rapport."
+        );
+
+        return;
+
+    }
+
+    try{
+
+        await navigator
+            .clipboard
+            .writeText(reportText);
+
+        toast(
+            "Rapport copié."
+        );
+
+    }catch{
+
+        toast(
+            "Copie impossible."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   EMAIL
+========================= */
+
+function confirmEmail(){
+
+    if(!reportText){
+
+        toast(
+            "Génère d'abord le rapport."
+        );
+
+        return;
+
+    }
+
+    document
+        .getElementById("emailModal")
+        .classList
+        .add("show");
+
+}
+
+
+function closeModal(){
+
+    document
+        .getElementById("emailModal")
+        .classList
+        .remove("show");
+
+}
+
+
+function openEmail(){
+
+    closeModal();
+
+    const subject=
+        encodeURIComponent(
+            "Signalement Instagram"
+        );
+
+    const body=
+        encodeURIComponent(
+            reportText
+        );
+
+    window.location.href=
+        "mailto:?subject=" +
+        subject +
+        "&body=" +
+        body;
+
+}
+
+
+/* =========================
+   EMAIL STATUS
+========================= */
+
+function showEmailStatus(){
+
+    document
+        .getElementById("supportModal")
+        .classList
+        .add("show");
+
+}
+
+
+function closeSupportModal(){
+
+    document
+        .getElementById("supportModal")
+        .classList
+        .remove("show");
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function navigate(page,button){
+
+    document
+        .querySelectorAll(".page")
+        .forEach(
+            x =>
+            x.classList.remove("active")
+        );
+
+    document
+        .getElementById(page)
+        .classList
+        .add("active");
+
+    document
+        .querySelectorAll(".nav")
+        .forEach(
+            x =>
+            x.classList.remove("active")
+        );
+
+    button.classList.add("active");
+
+    if(page==="history"){
+
+        renderHistory();
+
+    }
+
+    if(page==="stats"){
+
+        updateDashboard();
+
+    }
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================
+   HISTORY
+========================= */
+
+function renderHistory(){
+
+    const list=
+        document
+        .getElementById(
+            "historyList"
+        );
+
+    const history=
+        getHistory();
+
+    if(!history.length){
+
+        list.innerHTML=`
+
+            <div class="info-card">
+
+                <h2>
+                    ◷ AUCUNE ACTIVITÉ
+                </h2>
+
+                <p>
+                    Les rapports préparés
+                    apparaîtront ici.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+    list.innerHTML=
+        history
+        .map(item=>`
+
+            <div class="history-card">
+
+                <div class="history-top">
+
+                    <div class="history-target">
+                        @${escapeHtml(
+                            item.target
+                        )}
+                    </div>
+
+                    <div class="badge">
+                        ${escapeHtml(
+                            item.type
+                            .toUpperCase()
+                        )}
+                    </div>
+
+                </div>
+
+                <div class="history-bottom">
+                    ${escapeHtml(
+                        item.date
+                    )}
+                </div>
+
+            </div>
+
+        `)
+        .join("");
+
+}
+
+
+/* =========================
+   STATS
+========================= */
+
+function updateDashboard(){
+
+    const history=
+        getHistory();
+
+    const generated=
+        Number(
+            localStorage.getItem(
+                "prime_generated"
+            ) || 0
+        );
+
+    document
+        .getElementById("total")
+        .textContent=
+        history.length;
+
+    document
+        .getElementById("generated")
+        .textContent=
+        generated;
+
+    document
+        .getElementById("statTotal")
+        .textContent=
+        history.length;
+
+    document
+        .getElementById("statGen")
+        .textContent=
+        generated;
+
+    document
+        .getElementById("statSpam")
+        .textContent=
+        history.filter(
+            x=>x.type==="spam"
+        ).length;
+
+}
+
+
+function increment(key){
+
+    const value=
+        Number(
+            localStorage.getItem(
+                "prime_" + key
+            ) || 0
+        );
+
+    localStorage.setItem(
+        "prime_" + key,
+        value+1
+    );
+
+}
+
+
+/* =========================
+   CLEAR
+========================= */
+
+function clearHistory(){
+
+    localStorage.removeItem(
+        "prime_reports"
+    );
+
+    localStorage.removeItem(
+        "prime_generated"
+    );
+
+    updateDashboard();
+
+    renderHistory();
+
+    toast(
+        "Données locales supprimées."
+    );
+
+}
+
+
+/* =========================
+   RESET
+========================= */
+
+function resetApp(){
+
+    selectedType="";
+    reportText="";
+
+    document
+        .querySelectorAll(".type")
+        .forEach(
+            x =>
+            x.classList.remove(
+                "selected"
+            )
+        );
+
+    document
+        .getElementById("target")
+        .value="";
+
+    document
+        .getElementById("message")
+        .innerHTML=`
+
+            <div class="empty">
+
+                Sélectionne un motif
+                et indique le compte.
+
+                <br><br>
+
+                Le rapport apparaîtra ici.
+
+            </div>
+
+        `;
+
+    toast(
+        "Interface réinitialisée."
+    );
+
+}
+
+
+/* =========================
+   THEMES
+========================= */
+
+function setTheme(
+    accent,
+    accent2,
+    button
+){
+
+    document.documentElement
+        .style
+        .setProperty(
+            "--accent",
+            accent
+        );
+
+    document.documentElement
+        .style
+        .setProperty(
+            "--accent2",
+            accent2
+        );
+
+    localStorage.setItem(
+        "prime_theme",
+        JSON.stringify({
+            accent,
+            accent2
+        })
+    );
+
+    document
+        .querySelectorAll(".theme")
+        .forEach(
+            x =>
+            x.classList
+             .remove("active")
+        );
+
+    button.classList
+        .add("active");
+
+    toast(
+        "Thème appliqué."
+    );
+
+}
+
+
+/* =========================
+   PHOTO BACKGROUND
+========================= */
+
+function loadImage(event){
+
+    const file=
+        event.target.files[0];
+
+    if(!file)return;
+
+    const url=
+        URL.createObjectURL(file);
+
+    const image=
+        document.getElementById(
+            "imageBackground"
+        );
+
+    const video=
+        document.getElementById(
+            "mediaBackground"
+        );
+
+    video.pause();
+    video.removeAttribute("src");
+    video.load();
+
+    video.style.display="none";
+
+    image.src=url;
+    image.style.display="block";
+
+    toast(
+        "Photo appliquée."
+    );
+
+}
+
+
+/* =========================
+   VIDEO BACKGROUND
+========================= */
+
+function loadVideo(event){
+
+    const file=
+        event.target.files[0];
+
+    if(!file)return;
+
+    const url=
+        URL.createObjectURL(file);
+
+    const image=
+        document.getElementById(
+            "imageBackground"
+        );
+
+    const video=
+        document.getElementById(
+            "mediaBackground"
+        );
+
+    image.style.display="none";
+    image.removeAttribute("src");
+
+    video.src=url;
+    video.style.display="block";
+
+    video.play()
+        .catch(()=>{});
+
+    toast(
+        "Vidéo appliquée."
+    );
+
+}
+
+
+/* =========================
+   REMOVE BACKGROUND
+========================= */
+
+function removeBackground(){
+
+    const image=
+        document.getElementById(
+            "imageBackground"
+        );
+
+    const video=
+        document.getElementById(
+            "mediaBackground"
+        );
+
+    image.style.display="none";
+    image.removeAttribute("src");
+
+    video.pause();
+    video.style.display="none";
+    video.removeAttribute("src");
+    video.load();
+
+    toast(
+        "Fond personnalisé retiré."
+    );
+
+}
+
+
+/* =========================
+   ESCAPE
+========================= */
+
+function escapeHtml(value){
+
+    return String(value)
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+
+/* =========================
+   TOAST
+========================= */
+
+function toast(text){
+
+    const el=
+        document.getElementById(
+            "toast"
+        );
+
+    el.textContent=text;
+
+    el.classList.add("show");
+
+    clearTimeout(
+        toastTimer
+    );
+
+    toastTimer=
+        setTimeout(
+            ()=>{
+                el.classList
+                  .remove("show");
+            },
+            2600
+        );
+
+}
+
+
+/* =========================
+   LOAD THEME
+========================= */
+
+function loadTheme(){
+
+    try{
+
+        const theme=
+            JSON.parse(
+                localStorage.getItem(
+                    "prime_theme"
+                )
+            );
+
+        if(theme){
+
+            document.documentElement
+                .style
+                .setProperty(
+                    "--accent",
+                    theme.accent
+                );
+
+            document.documentElement
+                .style
+                .setProperty(
+                    "--accent2",
+                    theme.accent2
+                );
+
+        }
+
+    }catch{}
+
+}
+
+
+/* =========================
+   INIT
+========================= */
+
+loadTheme();
+updateDashboard();
+renderHistory();
+
+</script>
+
+</body>
+</html>
